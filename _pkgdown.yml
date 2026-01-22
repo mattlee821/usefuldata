@@ -1,0 +1,16 @@
+url: https://mattlee821.github.io/usefuldata
+
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, news]
+    right: [github]
+
+articles:
+- title: Mapping
+  navbar: Mapping
+  contents:
+  - olink_mapping
+  - somalogic_mapping

@@ -11,6 +11,7 @@ Authors@R: c(
   )
 Description: Provides valid and useful datasets for analysis. Currently includes mappings for Olink and SomaLogic datasets to Ensembl, UniProt, and HGNC identifiers. This package will include other datasets in the future.
 License: GPL-3
+URL: https://mattlee821.github.io/usefuldata
 Encoding: UTF-8
 LazyData: true
 Suggests: 
@@ -28,7 +29,9 @@ Suggests:
     tidyr,
     SomaDataIO,
     data.table,
-    readxl
+    readxl,
+    DT,
+    pkgdown
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Depends: 
