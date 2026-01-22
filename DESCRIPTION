@@ -4,8 +4,8 @@ Title: Useful Data Sets
 Version: 0.1.0
 Authors@R: c(
     person(
-      "Jane", "Doe",
-      email = "jane@example.com",
+      "Matthew", "Lee",
+      email = "leem@iarc.who.int",
       role = c("aut", "cre")
     )
   )
