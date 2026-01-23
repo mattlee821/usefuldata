@@ -8,6 +8,12 @@ input_dir <- "data-raw/raw_data"
 standard_files <- c(
   "Olink Explore Cardiometabolic - 2026-01-22.csv",
   "Olink Explore Cardiometabolic II - 2026-01-22.csv",
+  "Olink Explore Inflammation - 2026-01-22.csv",
+  "Olink Explore Inflammation II - 2026-01-22.csv",
+  "Olink Explore Neurology - 2026-01-22.csv",
+  "Olink Explore Neurology II - 2026-01-22.csv",
+  "Olink Explore Oncology - 2026-01-22.csv",
+  "Olink Explore Oncology II - 2026-01-22.csv",
   "Olink Target 48 Immune Surveillance - 2026-01-22.csv",
   "Olink Target 48 Cytokine - 2026-01-22.csv",
   "Olink Target 48 Neurodegeneration - 2026-01-22.csv",
