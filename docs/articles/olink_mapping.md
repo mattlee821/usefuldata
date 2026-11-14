@@ -1,10 +1,10 @@
 # Olink Mapping
 
-## Olink Mapping Dataset
+## Shared UniProt Mapping Dataset
 
-This dataset provides a mapping of Olink Explore and Target proteins to
-their corresponding genomic coordinates and gene identifiers. The data
-is derived from Olink assay data and mapped using BioMart.
+`mapping_GRCh38_p14_uniprot` maps UniProt accessions to gene identifiers
+and genomic coordinates. It combines the UniProt mappings used by Olink
+and SomaLogic, so Olink data can be joined directly by `UNIPROT`.
 
 ### Data Generation Summary
 
@@ -28,26 +28,24 @@ The mapping was generated using the following steps:
 
 ### Column Descriptions
 
-| Column                 | Description                                 |
-|:-----------------------|:--------------------------------------------|
-| `UNIPROT`              | UniProt ID provided by Olink                |
-| `Target`               | Target gene symbol (HGNC) provided by Olink |
-| `TargetFullName`       | Full protein name provided by Olink         |
-| `uniprot_gn_id`        | Mapped UniProt gene ID                      |
-| `uniprot_gn_symbol`    | Mapped UniProt gene symbol                  |
-| `entrezgene_id`        | Mapped Entrez gene ID                       |
-| `entrezgene_accession` | Mapped Entrez accession                     |
-| `hgnc_id`              | Mapped HGNC ID                              |
-| `hgnc_symbol`          | Mapped HGNC symbol                          |
-| `ensembl_gene_id`      | Mapped Ensembl Gene ID                      |
-| `external_gene_name`   | External gene name                          |
-| `gene_biotype`         | Gene biotype (e.g. protein_coding)          |
-| `CHR`                  | Chromosome name                             |
-| `START_hg19`           | Start position (hg19)                       |
-| `END_hg19`             | End position (hg19)                         |
-| `strand_hg19`          | Strand (hg19)                               |
-| `START_hg38`           | Start position (hg38)                       |
-| `END_hg38`             | End position (hg38)                         |
-| `strand_hg38`          | Strand (hg38)                               |
+| Column                 | Description                |
+|:-----------------------|:---------------------------|
+| `UNIPROT`              | UniProt accession          |
+| `uniprot_gn_id`        | Mapped UniProt gene ID     |
+| `uniprot_gn_symbol`    | Mapped UniProt gene symbol |
+| `entrezgene_id`        | Mapped Entrez gene ID      |
+| `entrezgene_accession` | Mapped Entrez accession    |
+| `hgnc_id`              | Mapped HGNC ID             |
+| `hgnc_symbol`          | Mapped HGNC symbol         |
+| `ensembl_gene_id`      | Mapped Ensembl Gene ID     |
+| `external_gene_name`   | External gene name         |
+| `gene_biotype`         | Gene biotype               |
+| `CHR`                  | Chromosome name            |
+| `START_hg19`           | Start position (hg19)      |
+| `END_hg19`             | End position (hg19)        |
+| `strand_hg19`          | Strand (hg19)              |
+| `START_hg38`           | Start position (hg38)      |
+| `END_hg38`             | End position (hg38)        |
+| `strand_hg38`          | Strand (hg38)              |
 
 ### Interactive Table

@@ -2,38 +2,28 @@
 source("data-raw/utils.R")
 
 # data ====
-url <- "https://github.com/SomaLogic/SomaLogic-Data/raw/main/example_data_v5.0_plasma.adat"
-destfile <- "data-raw/raw_data/example_data_v5.0_plasma.adat"
-
-# Create directory if it doesn't exist (though it should)
-if (!dir.exists(dirname(destfile))) {
-  dir.create(dirname(destfile), recursive = TRUE)
+metadata_path <- "data/metadata_GRCh38_p14_somalogic.rda"
+if (!file.exists(metadata_path)) {
+  stop("Run data-raw/metadata-somalogic.R first.", call. = FALSE)
 }
 
-if (!file.exists(destfile)) {
-  utils::download.file(url, destfile, method = "auto", mode = "wb")
-}
+metadata_env <- new.env(parent = emptyenv())
+load(metadata_path, envir = metadata_env)
 
-data <- SomaDataIO::read_adat(destfile)
-data <- SomaDataIO::getAnalyteInfo(data)
-
-## format data
-data <- data %>%
-  tidyr::separate_rows(UniProt, sep = "\\|") %>%
-  tidyr::separate_rows(EntrezGeneID, sep = "\\|") %>%
-  tidyr::separate_rows(EntrezGeneSymbol, sep = "\\|") %>%
-  dplyr::filter(
-    Organism == "Human",
-    Type == "Protein", # remove controls
-    !if_any(everything(), ~ grepl("internal use only", ., ignore.case = TRUE))
-  ) %>% # remove internal use only
-  dplyr::select(SeqId, SomaId, UniProt, Target, TargetFullName, EntrezGeneID, EntrezGeneSymbol) %>%
-  dplyr::rename(UNIPROT = UniProt) %>%
+data <- metadata_env$metadata_GRCh38_p14_somalogic %>%
+  tidyr::separate_rows(EntrezGeneID, sep = "[|,[:space:]]+") %>%
+  tidyr::separate_rows(EntrezGeneSymbol, sep = "[|,[:space:]]+") %>%
+  dplyr::select(
+    SeqId, SomaId, UNIPROT, Target, TargetFullName,
+    EntrezGeneID, EntrezGeneSymbol
+  ) %>%
   dplyr::mutate(EntrezGeneID = as.integer(EntrezGeneID))
 
-id_uniprot_id <- unique(data$UNIPROT)
-id_entrez_id <- unique(data$EntrezGeneID)
-id_hgnc_id <- unique(data$EntrezGeneSymbol)
+id_uniprot_id <- unique(data$UNIPROT[!is.na(data$UNIPROT) & data$UNIPROT != ""])
+id_entrez_id <- unique(stats::na.omit(data$EntrezGeneID))
+id_hgnc_id <- unique(data$EntrezGeneSymbol[
+  !is.na(data$EntrezGeneSymbol) & data$EntrezGeneSymbol != ""
+])
 
 # mart ====
 mart <- useMart("ensembl", dataset = "hsapiens_gene_ensembl")
@@ -235,14 +225,20 @@ data_map_hgnc <- data %>%
     by = c("Target" = "hgnc_symbol")
   )
 
+coalesce_rows <- function(x) {
+  do.call(dplyr::coalesce, as.list(x))
+}
+
 data_map <- bind_rows(
   data_map_uniprot,
   data_map_entrez,
   data_map_hgnc
 ) %>%
   dplyr::group_by(SeqId, SomaId, UNIPROT) %>%
-  dplyr::summarise(dplyr::across(dplyr::everything(), ~ dplyr::coalesce(.x[1], .x[2]))) %>%
-  dplyr::ungroup() %>%
+  dplyr::summarise(
+    dplyr::across(dplyr::everything(), coalesce_rows),
+    .groups = "drop"
+  ) %>%
   distinct() %>%
   as.data.frame()
 
@@ -267,6 +263,3 @@ write.table(
   file = paste0("data-raw/raw_data/mapping_", VAR_build, "_somalogic.txt"),
   sep = "\t", col.names = T, row.names = F, quote = FALSE
 )
-# save(data_map, file = paste0("data/mapping_", VAR_build, "_somalogic.RData"))
-mapping_GRCh38_p14_somalogic <- data_map
-usethis::use_data(mapping_GRCh38_p14_somalogic, overwrite = TRUE)

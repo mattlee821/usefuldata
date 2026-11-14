@@ -7,22 +7,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Useful Data Sets • usefuldata</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Useful Data Sets">
-<meta name="description" content="Provides valid and useful datasets for analysis. Currently includes mappings for Olink and SomaLogic datasets to Ensembl, UniProt, and HGNC identifiers. This package will include other datasets in the future.">
-<meta property="og:description" content="Provides valid and useful datasets for analysis. Currently includes mappings for Olink and SomaLogic datasets to Ensembl, UniProt, and HGNC identifiers. This package will include other datasets in the future.">
+<meta name="description" content="Provides a shared UniProt mapping for Olink and SomaLogic proteins, SomaLogic example ADAT assay metadata, gene identifiers, and genomic coordinates.">
+<meta property="og:description" content="Provides a shared UniProt mapping for Olink and SomaLogic proteins, SomaLogic example ADAT assay metadata, gene identifiers, and genomic coordinates.">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-primary" data-bs-theme="dark" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="index.html">usefuldata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +41,7 @@
     <li><a class="dropdown-item" href="articles/somalogic_mapping.html">SomaLogic Mapping</a></li>
   </ul>
 </li>
+<li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav"></ul>
 </div>
@@ -52,7 +53,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="usefuldata">usefuldata<a class="anchor" aria-label="anchor" href="#usefuldata"></a>
 </h1></div>
-<p>The <code>usefuldata</code> package provides useful datasets for analysis. It currently includes pre-processed mapping datasets for Olink and SomaLogic proteomics platforms, but will include other datasets in the future.</p>
+<p>The <code>usefuldata</code> package provides useful datasets for analysis. It includes a shared UniProt mapping for Olink and SomaLogic proteins, plus SomaLogic-specific assay metadata.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -66,18 +67,20 @@
 </h2>
 <p>The package contains the following datasets:</p>
 <div class="section level3">
-<h3 id="id_1-mapping_grch38_p14_olink">1. <code>mapping_GRCh38_p14_olink</code>
-<a class="anchor" aria-label="anchor" href="#id_1-mapping_grch38_p14_olink"></a>
+<h3 id="id_1-mapping_grch38_p14_uniprot">1. <code>mapping_GRCh38_p14_uniprot</code>
+<a class="anchor" aria-label="anchor" href="#id_1-mapping_grch38_p14_uniprot"></a>
 </h3>
-<p>This dataset maps Olink proteins (UniProt IDs) to gene identifiers and genomic positions.</p>
-<p><strong>Columns include:</strong> - <code>UNIPROT</code>: UniProt ID (Olink identifier) - <code>Target</code>: Gene Symbol - <code>ensembl_gene_id</code>: Ensembl Gene ID - <code>hgnc_id</code> / <code>hgnc_symbol</code>: HGNC info - <code>START_hg19</code> / <code>END_hg19</code>: Genomic coordinates (hg19) - <code>START_hg38</code> / <code>END_hg38</code>: Genomic coordinates (hg38)</p>
+<p>This shared dataset maps UniProt accessions to gene identifiers and genomic positions. It is the mapping to use for Olink data, which uses UniProt accessions as identifiers, and as the protein-level reference for SomaLogic data.</p>
+<p><strong>Columns include:</strong> - <code>UNIPROT</code>: UniProt accession - <code>ensembl_gene_id</code>: Ensembl Gene ID - <code>hgnc_id</code> / <code>hgnc_symbol</code>: HGNC identifiers - <code>START_hg19</code> / <code>END_hg19</code>: Genomic coordinates (hg19) - <code>START_hg38</code> / <code>END_hg38</code>: Genomic coordinates (hg38)</p>
+<p>An accession can have more than one row if the source mapping contains multiple distinct annotation records. Check for duplicate <code>UNIPROT</code> values before assuming a one-to-one join.</p>
 </div>
 <div class="section level3">
-<h3 id="id_2-mapping_grch38_p14_somalogic">2. <code>mapping_GRCh38_p14_somalogic</code>
-<a class="anchor" aria-label="anchor" href="#id_2-mapping_grch38_p14_somalogic"></a>
+<h3 id="id_2-metadata_grch38_p14_somalogic">2. <code>metadata_GRCh38_p14_somalogic</code>
+<a class="anchor" aria-label="anchor" href="#id_2-metadata_grch38_p14_somalogic"></a>
 </h3>
-<p>This dataset maps SomaLogic aptamers (SeqId/SomaId) to gene identifiers and genomic positions.</p>
-<p><strong>Columns include:</strong> - <code>SeqId</code>: Sequence ID - <code>SomaId</code>: SomaLogic ID - <code>UNIPROT</code>: UniProt ID - <code>Target</code>: Gene Symbol - <code>ensembl_gene_id</code>: Ensembl Gene ID - <code>START_hg19</code> / <code>END_hg19</code>: Genomic coordinates (hg19) - <code>START_hg38</code> / <code>END_hg38</code>: Genomic coordinates (hg38)</p>
+<p>This dataset contains metadata extracted from the public example ADATs listed in the <a href="https://github.com/SomaLogic/SomaLogic-Data" class="external-link">SomaLogic-Data repository</a>, with the source filename and checksum recorded per row. It currently includes V4, V4.1, and V5.0 examples; newly listed <code>example_data*.adat</code> files are included when the metadata is refreshed. These examples are the package’s reference inventory, not a guarantee of full commercial menu coverage. Join the metadata to the shared mapping using <code>UNIPROT</code>.</p>
+<p><strong>Columns include:</strong> - <code>SeqId</code>: Sequence ID - <code>SomaId</code>: SomaLogic ID - <code>ExampleADAT</code>: Source example ADAT filename - <code>ADAT_MD5</code>: Checksum of the exact downloaded ADAT - <code>UNIPROT</code>: UniProt ID - <code>Target</code>: Gene Symbol - <code>TargetFullName</code>: Full target name - <code>EntrezGeneID</code> / <code>EntrezGeneSymbol</code>: Source Entrez identifiers</p>
+<p>A SomaLogic assay can map to multiple UniProt accessions, and the same assay may appear in multiple example files. Keep the <code>ExampleADAT</code>-<code>SeqId</code>-<code>UNIPROT</code> relationship when joining assay measurements; joining may produce multiple rows for an assay.</p>
 </div>
 </div>
 <div class="section level2">
@@ -87,11 +90,25 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mattlee821.github.io/usefuldata">usefuldata</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Load Olink mapping</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mapping_GRCh38_p14_olink</span><span class="op">)</span></span>
+<span><span class="co"># Load the shared UniProt mapping</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mapping_GRCh38_p14_uniprot</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Load SomaLogic mapping</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">mapping_GRCh38_p14_somalogic</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Load SomaLogic assay metadata and join to protein annotations</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">metadata_GRCh38_p14_somalogic</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span></span>
+<span>  <span class="va">metadata_GRCh38_p14_somalogic</span>,</span>
+<span>  <span class="va">mapping_GRCh38_p14_uniprot</span>,</span>
+<span>  by <span class="op">=</span> <span class="st">"UNIPROT"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="regenerating-the-data">Regenerating the data<a class="anchor" aria-label="anchor" href="#regenerating-the-data"></a>
+</h2>
+<p>From the package root, download the current public example ADATs, compare their SomaLogic IDs and SeqId-UniProt links against the saved metadata, then rebuild the UniProt mapping:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">Rscript</span> data-raw/mapping-olink.R</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="ex">Rscript</span> data-raw/metadata-somalogic.R</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="ex">Rscript</span> data-raw/mapping-somalogic.R</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="ex">Rscript</span> data-raw/mapping-uniprot.R</span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
@@ -127,7 +144,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

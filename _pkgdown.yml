@@ -2,7 +2,6 @@ url: https://mattlee821.github.io/usefuldata
 
 template:
   bootstrap: 5
-  bootswatch: darkly
 
 navbar:
   structure:

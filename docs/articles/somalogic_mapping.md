@@ -1,61 +1,52 @@
 # SomaLogic Mapping
 
-## SomaLogic Mapping Dataset
+## SomaLogic Assay Metadata
 
-This dataset provides a mapping of SomaLogic aptamers to their
-corresponding genomic coordinates and gene identifiers. The data is
-derived from the SomaLogic v5.0 Plasma ADAT file.
+`metadata_GRCh38_p14_somalogic` contains SomaLogic assay identifiers and
+their associated UniProt accessions. Protein and genomic annotations are
+provided separately in `mapping_GRCh38_p14_uniprot`.
 
 ### Data Generation Summary
 
 The mapping was generated using the following steps:
 
-1.  **Input Data**: Raw data was retrieved from the SomaLogic GitHub
-    repository (Example Data v5.0 Plasma ADAT).
+1.  **Input Data**: All files matching `example_data*.adat` in the
+    SomaLogic GitHub repository are downloaded. The current files are
+    V4, V4.1, and V5.0 examples; their filenames and checksums are
+    retained in the metadata.
 2.  **Formatting**:
     - Split multiple entries for UniProt, Entrez Gene ID, and Entrez
       Gene Symbol.
     - Filtered for **Human** organism only.
     - Filtered for **Protein** type (removing controls).
     - **Excluded** all entries flagged as “internal use only”.
-3.  **Mapping**: UniProt IDs, Entrez IDs, and HGNC symbols were mapped
-    to Ensembl Gene IDs using `biomaRt` (Ensembl dataset
-    `hsapiens_gene_ensembl`).
-4.  **Filtering**:
-    - Only **protein_coding** genes were retained.
-    - Only standard chromosomes (1-22, X, Y) were retained.
-    - Mappings were cross-referenced to ensure symbol consistency.
-5.  **Genomic Positions**: Start and End positions were retrieved for
-    both **hg19** and **hg38** builds using
-    `TxDb.Hsapiens.UCSC.hg19.knownGene` and
-    `TxDb.Hsapiens.UCSC.hg38.knownGene`.
+3.  **Protein annotations**: UniProt accessions are joined to
+    `mapping_GRCh38_p14_uniprot` using `UNIPROT`.
 
 ### Column Descriptions
 
-| Column                 | Description                              |
-|:-----------------------|:-----------------------------------------|
-| `SeqId`                | SomaLogic Sequence ID                    |
-| `SomaId`               | SomaLogic Aptamer ID                     |
-| `UNIPROT`              | UniProt ID provided by SomaLogic         |
-| `Target`               | Target gene symbol (HGNC)                |
-| `TargetFullName`       | Full protein name                        |
-| `EntrezGeneID`         | Entrez Gene ID provided by SomaLogic     |
-| `EntrezGeneSymbol`     | Entrez Gene Symbol provided by SomaLogic |
-| `uniprot_gn_id`        | Mapped UniProt gene ID                   |
-| `uniprot_gn_symbol`    | Mapped UniProt gene symbol               |
-| `entrezgene_id`        | Mapped Entrez gene ID                    |
-| `entrezgene_accession` | Mapped Entrez accession                  |
-| `hgnc_id`              | Mapped HGNC ID                           |
-| `hgnc_symbol`          | Mapped HGNC symbol                       |
-| `ensembl_gene_id`      | Mapped Ensembl Gene ID                   |
-| `external_gene_name`   | External gene name                       |
-| `gene_biotype`         | Gene biotype (e.g. protein_coding)       |
-| `CHR`                  | Chromosome name                          |
-| `START_hg19`           | Start position (hg19)                    |
-| `END_hg19`             | End position (hg19)                      |
-| `strand_hg19`          | Strand (hg19)                            |
-| `START_hg38`           | Start position (hg38)                    |
-| `END_hg38`             | End position (hg38)                      |
-| `strand_hg38`          | Strand (hg38)                            |
+| Column             | Description                              |
+|:-------------------|:-----------------------------------------|
+| `SeqId`            | SomaLogic Sequence ID                    |
+| `SomaId`           | SomaLogic Aptamer ID                     |
+| `ExampleADAT`      | Source public example ADAT               |
+| `ADAT_MD5`         | Checksum of the exact downloaded ADAT    |
+| `UNIPROT`          | UniProt ID provided by SomaLogic         |
+| `Target`           | Target gene symbol (HGNC)                |
+| `TargetFullName`   | Full protein name                        |
+| `EntrezGeneID`     | Entrez Gene ID provided by SomaLogic     |
+| `EntrezGeneSymbol` | Entrez Gene Symbol provided by SomaLogic |
+
+An assay `SeqId` can be linked to multiple UniProt accessions. Keep each
+`SeqId`-`UNIPROT` relationship when joining assay measurements; the join
+can produce multiple rows per assay.
+
+``` r
+somalogic_with_annotations <- merge(
+    metadata_GRCh38_p14_somalogic,
+    mapping_GRCh38_p14_uniprot,
+    by = "UNIPROT"
+)
+```
 
 ### Interactive Table

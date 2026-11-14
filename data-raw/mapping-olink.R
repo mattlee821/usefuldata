@@ -267,6 +267,3 @@ write.table(
   file = paste0("data-raw/raw_data/mapping_", VAR_build, "_olink.txt"),
   sep = "\t", col.names = T, row.names = F, quote = FALSE
 )
-
-mapping_GRCh38_p14_olink <- data_map
-usethis::use_data(mapping_GRCh38_p14_olink, overwrite = TRUE)

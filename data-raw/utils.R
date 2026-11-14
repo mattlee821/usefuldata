@@ -36,20 +36,21 @@ biomaRt_getBM_batch <- function(mart, attributes, filters, values, chunk_size) {
     # Loop over each chunk and fetch data, storing results in a list
     result_list <- list()
     for (i in seq_along(attribute_chunks)) {
-        result <- tryCatch(
-            biomaRt::getBM(
-                attributes = attribute_chunks[[i]],
-                filters = filters,
-                values = values,
-                mart = mart
-            ),
-            error = function(e) NULL # If a query fails, return NULL for this chunk
+        result <- biomaRt::getBM(
+            attributes = attribute_chunks[[i]],
+            filters = filters,
+            values = values,
+            mart = mart
         )
 
-        # Only add result to the list if it's not NULL and contains the identifier column
-        if (!is.null(result) && filters %in% colnames(result)) {
-            result_list[[i]] <- result
+        if (!filters %in% colnames(result)) {
+            stop(
+                "BioMart result is missing the requested filter column: ",
+                filters,
+                call. = FALSE
+            )
         }
+        result_list[[i]] <- result
     }
 
     # Sequentially join each data frame in result_list
