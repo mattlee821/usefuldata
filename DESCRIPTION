@@ -10,7 +10,7 @@ Authors@R: c(
     )
   )
 Description: Provides a shared UniProt mapping for Olink and SomaLogic proteins,
-    SomaLogic example ADAT assay metadata, gene identifiers, and genomic coordinates.
+    SomaLogic example ADAT assay metadata with current UniProt accessions, gene identifiers, and genomic coordinates.
 License: GPL-3
 URL: https://mattlee821.github.io/usefuldata
 Encoding: UTF-8
@@ -32,9 +32,10 @@ Suggests:
     data.table,
     readxl,
     jsonlite,
+    httr2,
     DT,
     pkgdown
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Depends: 
     R (>= 3.5)
+Config/roxygen2/version: 8.1.1

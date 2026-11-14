@@ -44,6 +44,20 @@ This dataset contains metadata extracted from the public example ADATs listed in
 
 A SomaLogic assay can map to multiple UniProt accessions, and the same assay may appear in multiple example files. Keep the `ExampleADAT`-`SeqId`-`UNIPROT` relationship when joining assay measurements; joining may produce multiple rows for an assay.
 
+### 3. `somalogic_seqid_uniprot_current` and `somalogic_uniprot_status`
+
+UniProt retires accessions, and the SomaLogic example ADATs keep the accession each assay was annotated with. These two datasets check every accession in `metadata_GRCh38_p14_somalogic` against UniProt and record the result, the UniProt release and the date.
+
+`somalogic_seqid_uniprot_current` has 1 row per SeqId, from the most recent example ADAT that contains it (the highest version in the file name; the unversioned `example_data.adat` is the oldest):
+- `UNIPROT_SOURCE`: the accession(s) in that ADAT, sorted and joined with `-`
+- `UNIPROT_CURRENT`: the current accession(s), sorted and joined with `-`. A merged accession is replaced by the entry it was merged into and a demerged accession by all the entries it was split into; `NA` when UniProt has deleted it
+- `UNIPROT_STATUS`: `current`, `updated` or `no_current_accession`
+- `UNIPROT_CHANGES`, `UNIPROT_RELEASE`, `UNIPROT_CHECKED`, and `ExampleADAT`, `SomaId`, `Target`, `TargetFullName` from that ADAT
+
+`somalogic_uniprot_status` has 1 row per accession and current accession (a demerged accession has several) with `STATUS` (`current`, `secondary`, `demerged`, `deleted`, `unresolved`).
+
+Use `UNIPROT_CURRENT` to name or join SomaLogic assays; keep `SeqId` with it, because several SeqIds can share a UniProt accession.
+
 ## Usage
 
 You can load the datasets directly into your R session:
@@ -65,11 +79,12 @@ merge(
 
 ## Regenerating the data
 
-From the package root, download the current public example ADATs, compare their SomaLogic IDs and SeqId-UniProt links against the saved metadata, then rebuild the UniProt mapping:
+From the package root, download the current public example ADATs, compare their SomaLogic IDs and SeqId-UniProt links against the saved metadata, check the accessions against UniProt (needs network access), then rebuild the UniProt mapping:
 
 ```sh
 Rscript data-raw/mapping-olink.R
 Rscript data-raw/metadata-somalogic.R
+Rscript data-raw/status-uniprot.R
 Rscript data-raw/mapping-somalogic.R
 Rscript data-raw/mapping-uniprot.R
 ```

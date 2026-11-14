@@ -1,3 +1,10 @@
+# usefuldata (development)
+
+* Add `somalogic_seqid_uniprot_current`, 1 row per SomaLogic SeqId with the UniProt accession(s) from the most recent
+  example ADAT, replaced by their current accession(s) where UniProt has merged, demerged or deleted them.
+* Add `somalogic_uniprot_status` with the UniProt status of every accession in the SomaLogic metadata, the UniProt
+  release and the date checked. Both are built by `data-raw/status-uniprot.R`, run after `metadata-somalogic.R`.
+
 # usefuldata 1.0.0
 
 ## Data model
