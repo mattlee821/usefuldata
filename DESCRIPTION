@@ -1,7 +1,7 @@
 Package: usefuldata
 Type: Package
 Title: Useful Data Sets
-Version: 0.1.0
+Version: 1.0.0
 Authors@R: c(
     person(
       "Matthew", "Lee",
@@ -9,7 +9,8 @@ Authors@R: c(
       role = c("aut", "cre")
     )
   )
-Description: Provides valid and useful datasets for analysis. Currently includes mappings for Olink and SomaLogic datasets to Ensembl, UniProt, and HGNC identifiers. This package will include other datasets in the future.
+Description: Provides a shared UniProt mapping for Olink and SomaLogic proteins,
+    SomaLogic example ADAT assay metadata, gene identifiers, and genomic coordinates.
 License: GPL-3
 URL: https://mattlee821.github.io/usefuldata
 Encoding: UTF-8
@@ -30,6 +31,7 @@ Suggests:
     SomaDataIO,
     data.table,
     readxl,
+    jsonlite,
     DT,
     pkgdown
 Roxygen: list(markdown = TRUE)
